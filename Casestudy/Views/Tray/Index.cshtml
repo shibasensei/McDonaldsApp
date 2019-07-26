@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <div class="card-title text-center mt-5">
+        <h3 class="font-weight-bold">Tray Contents</h3>
+        <img src="~/images/tray.png" style="height:10%;width:10%;padding-bottom:5%;" />
+        <p>Products Currently Selected</p>
+    </div>
+    <div class="text-center">
+        @{
+            Dictionary<int, object> tray = Context.Session.Get<Dictionary<int, Object>>("tray");
+            decimal totalItem = 0;
+            decimal total = 0;
+            decimal totalTax = 0;
+        }
+        <table class="table table-striped">
+            <tr style="font-weight:bolder;">
+                <th class="text-center">Code</th>
+                <th class="text-left">Name</th>
+                <th class="text-left">Msrp</th>
+                <th class="text-left">Qty</th>
+                <th class="text-left">Extended</th>
+            </tr>
+            @{
+                if (tray != null)
+                {
+                    foreach (var key in tray.Keys)
+                    {
+                        ProductViewModel item = JsonConvert.DeserializeObject
+                       <ProductViewModel>
+                       (Convert.ToString(tray[key]));
+                        if (item.Qty > 0)
+                        {
+
+                            totalItem = item.CostPrice * item.Qty;
+                            total += totalItem;
+                            totalTax += totalItem * 0.13m;
+
+                            <tr>
+                                <td class="text-center">@item.Id</td>
+                                <td class="text-left">@item.ProductName</td>
+                                <td class="text-left">@String.Format("{0:C}", (item.CostPrice))</td>
+                                <td class="text-left">@item.Qty</td>
+                                <td class="text-left">@String.Format("{0:C}", (totalItem))</td>
+                            </tr>
+                        }
+                    }
+                }
+            }
+        </table><hr />
+        <table class="table table-striped">
+            <tr>
+                <td class="text-right font-weight-bold">Sub total: </td>
+                <td class="text-left" id="chol">@String.Format("{0:C}", (total))</td>
+            </tr>
+            <tr>
+                <td class="text-right font-weight-bold">Tax: </td>
+                <td class="text-left" id="fibre">@String.Format("{0:C}", (totalTax))</td>
+            </tr>
+            <tr>
+                <td class="text-right font-weight-bold">Order total: </td>
+                <td class="text-left" id="salt">@String.Format("{0:C}", (total + totalTax))</td>
+            </tr>
+        </table>
+        <div class="text-center mb-2">
+            <form asp-controller="Tray" asp-action="AddTray" method="post" role="form">
+                @if (Context.Session.Get(SessionVariables.User) != null)
+                {
+                    <button type="submit" class="btn btn-sm btn-primary" id="modalbtn">Add Tray</button>
+                }
+                &nbsp;<a href="/Tray/ClearTray" class="btn btn-sm btn-success">Clear Tray</a>
+            </form>
+        </div>
+
+    </div>
+</div>

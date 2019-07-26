@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Casestudy.Models;
+using Microsoft.AspNetCore.Http;
+using Casestudy.Utils;
 
 namespace Casestudy.Controllers
 {
@@ -12,32 +14,21 @@ namespace Casestudy.Controllers
     {
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString(SessionVariables.LoginStatus) == null)
+            {
+                HttpContext.Session.SetString(SessionVariables.LoginStatus, "not logged in");
+            }
+            if (HttpContext.Session.GetString(SessionVariables.LoginStatus) == "not logged in")
+            {
+                if (HttpContext.Session.GetString(SessionVariables.Message) == null)
+                {
+                    HttpContext.Session.SetString(SessionVariables.Message, "please login!");
+                }
+            }
+            ViewBag.Status = HttpContext.Session.GetString(SessionVariables.LoginStatus);
+            ViewBag.Message = HttpContext.Session.GetString(SessionVariables.Message);
             return View();
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
