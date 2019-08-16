@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Branch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link href="~/css/site.css" rel="stylesheet" />
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFeOfe9156dSSdzKXLnBp7wOeI72NPmS0">
+</script>
+<div id="stores">
+    <div class="text-center">
+        <h3 class="mb-3">Find Some Branchs Near You</h3>
+        <b>Your Address:</b>
+        <p><input type="text" v-model="address" class="mt-2" /></p>
+        <p>
+            <i style="font-size:xx-small">
+                Example: London, ON or N5Y5R6 or 1460 Oxford St., London
+                On
+            </i>
+        </p>
+        <input type="button" v-on:click="loadAndShowModal();" value="locate" class="btn btn-default" />
+    </div>
+    <storemodal v-if="showModal" v-on:close="showModal = false" :lat="lat" :lng="lng"></storemodal>
+</div>
+<script src="~/js/storemap.js"></script>
+<!-- template for the modal component -->
+<script type="text/x-template" id="modal-template">
+    <transition name="modal">
+        <div class="modal-mask">
+            <div class="modal-wrapper">
+                <div class="modal-container">
+                    <button type="button" class="close" style="font-size:xx-large;" v-on:click="$emit('close')">
+                        X
+                    </button>
+                    <h3 class="text-center">3 Closest Branchs</h3>
+                    <div id="map" style="height:600px;"class="googlemap"></div>
+                </div>
+            </div>
+        </div>
+    </transition>
+</script>

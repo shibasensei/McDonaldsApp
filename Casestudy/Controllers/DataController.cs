@@ -5,31 +5,45 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using Casestudy.Models;
-
+using Microsoft.AspNetCore.Hosting;
 
 namespace Casestudy.Controllers
 {
     public class DataController : Controller
     {
         AppDbContext _ctx;
-        public DataController(AppDbContext context)
+        IHostingEnvironment _env;
+        public DataController(AppDbContext context, IHostingEnvironment env)
         {
             _ctx = context;
+            _env = env;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult LoadCsv()
+        {
+            BranchModel model = new BranchModel(_ctx);
+            bool storesLoaded = model.LoadCSVFromFile(_env.WebRootPath);
+            if (storesLoaded)
+                ViewBag.LoadedMsg = "Csv Loaded Successfully";
+            else
+                ViewBag.LoadedMsg = "Csv NOT Loaded";
+            return View("Index");
+        }
+        public async Task<IActionResult> Json()
         {
             UtilityModel util = new UtilityModel(_ctx);
-            string msg = "";
             var json = await getMenuItemJsonFromWebAsync();
             try
             {
-                msg = (util.loadData(json)) ?  " Tables loaded" : "problem loading tables";
+                ViewBag.LoadedMsg = (util.loadData(json)) ? "tables loaded" : "problem loading tables";
             }
             catch (Exception ex)
             {
-                msg = ex.Message;
+                ViewBag.LoadedMsg = ex.Message;
             }
-            ViewBag.LoadedMsg = msg;
+            return View("Index");
+        }
+        public IActionResult Index()
+        {
             return View();
         }
         private async Task<String> getMenuItemJsonFromWebAsync()

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Vyacheslav\\Desktop\\Casestudy\\Casestudy\\Casestudy.csproj": {}
+    "\\\\Mac\\Home\\Desktop\\Casestudy\\Casestudy\\Casestudy.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Vyacheslav\\Desktop\\Casestudy\\Casestudy\\Casestudy.csproj": {
+    "\\\\Mac\\Home\\Desktop\\Casestudy\\Casestudy\\Casestudy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vyacheslav\\Desktop\\Casestudy\\Casestudy\\Casestudy.csproj",
+        "projectUniqueName": "\\\\Mac\\Home\\Desktop\\Casestudy\\Casestudy\\Casestudy.csproj",
         "projectName": "Casestudy",
-        "projectPath": "C:\\Users\\Vyacheslav\\Desktop\\Casestudy\\Casestudy\\Casestudy.csproj",
+        "projectPath": "\\\\Mac\\Home\\Desktop\\Casestudy\\Casestudy\\Casestudy.csproj",
         "packagesPath": "C:\\Users\\Vyacheslav\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vyacheslav\\Desktop\\Casestudy\\Casestudy\\obj\\",
+        "outputPath": "\\\\Mac\\Home\\Desktop\\Casestudy\\Casestudy\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -4,6 +4,8 @@ using Casestudy.Utils;
 using Casestudy.Models;
 using System.Collections.Generic;
 using System;
+using System.Linq;
+
 namespace Casestudy.Controllers
 {
     public class TrayController : Controller
@@ -17,6 +19,7 @@ namespace Casestudy.Controllers
         {
             return View();
         }
+
         public ActionResult ClearTray() // clear out current tray
         {
             HttpContext.Session.Remove(SessionVariables.Tray);
@@ -51,6 +54,31 @@ namespace Casestudy.Controllers
             HttpContext.Session.Remove(SessionVariables.Tray); // clear out current tray once persisted
         HttpContext.Session.SetString(SessionVariables.Message, retMessage);
             return Redirect("/Home");
+        }
+        [Route("[action]")]
+        public IActionResult GetTrays()
+        {
+            TrayModel tmodel = new TrayModel(_db);
+            ApplicationUser user = HttpContext.Session.Get<ApplicationUser>(SessionVariables.User);
+            return Ok(tmodel.GetAllTrays(user));
+        }
+
+        public IActionResult List()
+        {
+            // they can't list Trays if they're not logged on
+            if (HttpContext.Session.Get<ApplicationUser>(SessionVariables.User) == null)
+            {
+                return Redirect("/Login");
+            }
+            return View("List");
+        }
+
+        [Route("[action]/{tid:int}")]
+        public IActionResult GetTrayDetails(int tid)
+        {
+            TrayModel model = new TrayModel(_db);
+            ApplicationUser user = HttpContext.Session.Get<ApplicationUser>(SessionVariables.User);
+            return Ok(model.GetTrayDetails(tid, user.Id));
         }
     }
 }

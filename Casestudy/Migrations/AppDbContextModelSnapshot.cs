@@ -15,7 +15,7 @@ namespace Casestudy.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -88,6 +88,32 @@ namespace Casestudy.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Casestudy.Models.Branch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .HasMaxLength(150);
+
+                    b.Property<double?>("Distance");
+
+                    b.Property<double?>("Latitude");
+
+                    b.Property<double?>("Longitude");
+
+                    b.Property<string>("Region")
+                        .HasMaxLength(2);
+
+                    b.Property<string>("Street")
+                        .HasMaxLength(150);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branches");
+                });
+
             modelBuilder.Entity("Casestudy.Models.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -113,6 +139,8 @@ namespace Casestudy.Migrations
                         .HasColumnType("money");
 
                     b.Property<DateTime>("OrderDate");
+
+                    b.Property<decimal>("OrderTotal");
 
                     b.Property<string>("UserId")
                         .IsRequired()

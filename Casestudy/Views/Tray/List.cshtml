@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link href="~/css/vuemodal.css" rel="stylesheet" />
+<div id="trays">
+    <div class="mt-5">
+        <div class="card">
+            <div class="card-title text-center mt-3">
+                <h3>Trays You've Ordered</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td class="text-left">Id</td>
+                            <th class="text-center">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr href="#" v-for="tray in trays" v-on:click="trayForModal=tray;loadAndShowModal();">
+                            <td>{{tray.id}}</td>
+                            <td class="text-center">{{formatDate(tray.dateCreated)}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <modal v-if="showModal" v-on:close="showModal = false" :tray="trayForModal" :details="detailsForModal"></modal>
+</div>
+<script src="~/js/traylist.js"></script>
+<!-- template for the modal component -->
+<script type="text/x-template" id="modal-template">
+    <transition name="modal">
+        <div class="modal-mask">
+            <div class="modal-wrapper">
+                <div class="modal-container">
+                    <button type="button" class="close" style="font-size:xx-large;" v-on:click="$emit('close')">
+                        X
+                    </button>
+                    <div class="text-center" style="font-size:larger;">
+                        <h3>Tray:{{tray.id}}</h3>
+                        {{formatDate(tray.dateCreated)}}<p></p>
+                        <img src="../images/Tray.png" style="height:60px;width:60px;margin:10px;" />
+                        <ul class="list-group vuerow">
+                            <li class="list-group-item vuerow" style="background-color:lightgray;">
+                                <span class="vuecol20 text-center">Name</span>
+                                <span class="vuecol20">MSRP</span>
+                                <span class="vuecol20">Qty S</span>
+                                <span class="vuecol20">Qty O</span>
+                                <span class="vuecol20">Qty B</span>
+                                <span class="vuecol20">Extended</span>
+                            </li>
+                            <li v-for="detail in details" class="list-group-item vuerow">
+                                <span class="vuecol20 text-center">{{detail.description}}</span>
+                                <span class="vuecol20 text-center">{{detail.price | toCurrency}}</span>
+                                <span class="vuecol20 text-center">{{detail.qtyS}}</span>
+                                <span class="vuecol20 text-center">{{detail.qtyO}}</span>
+                                <span class="vuecol20 text-center">{{detail.qtyB}}</span>
+                                <span class="vuecol20 text-center">{{detail.totalOne | toCurrency}}</span>
+                            </li>
+                        </ul>
+                        <div v-if="details[0]" class="text-right">
+                            <div class="vuerow">
+                                <div class="vuecol80">Sub:</div>
+                                <div class="vuecol20 pr-2">{{details[0].totalPrice | toCurrency}}</div>
+                            </div>
+                            <div class="vuerow">
+                                <div class="vuecol80">Tax:</div>
+                                <div class="vuecol20 pr-2">{{details[0].totalTax | toCurrency}}</div>
+                            </div>
+                            <div class="vuerow">
+                                <div class="vuecol80">Total:</div>
+                                <div class="vuecol20 pr-2">{{details[0].totalAll | toCurrency}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+</script>

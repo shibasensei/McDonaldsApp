@@ -16,6 +16,7 @@ namespace Casestudy.Models
         public DateTime OrderDate { get; set; }
         [Column(TypeName = "money")]
         public decimal OrderAmount { get; set; }
+        public decimal OrderTotal { get; set; }
         [Required]
         [StringLength(128)]
         public string UserId { get; set; }

@@ -1,7 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Data Results Page";
 }
-<div class="m-4">
-    @ViewBag.LoadedMsg
+<div class="text-center">
+    <h3>Data Utilities</h3>
+    <div class="m-4" id="busy">
+        @ViewBag.LoadedMsg
+    </div>
+    <div class="col-2 mb-1">
+        <button id="jsondatartns" class="btn btn-outline-dark" style="width:150px;">Menu Json</button>
+    </div>
+    <div class="col-2 mb-5">
+        <button id="csvdatartns" class="btn btn-outline-dark" style="width:150px;">Store CSV</button>
+    </div>
 </div>
